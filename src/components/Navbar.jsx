@@ -4,13 +4,10 @@ export const Navbar = () => {
 
 	return (
 		<nav className="navbar navbar-light bg-light">
-			<div className="container">
-				<Link to="/">
-					<span className="navbar-brand mb-0 h1">React Boilerplate</span>
-				</Link>
-				<div className="ml-auto">
+			<div className="container d-flex">				
+				<div className="ms-auto">
 					<Link to="/demo">
-						<button className="btn btn-primary">Check the Context in action</button>
+						<button className="btn btn-primary">Add a new contact</button>
 					</Link>
 				</div>
 			</div>
