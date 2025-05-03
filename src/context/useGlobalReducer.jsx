@@ -1,4 +1,3 @@
-// Import necessary hooks and functions from React.
 import { useContext, useReducer, createContext } from "react";
 import storeReducer, { initialStore } from "../reducer";
 
