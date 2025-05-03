@@ -35,7 +35,7 @@ const ContactForm = () => {
 
   return (
     <div className="container mt-5">
-      <h2 className="mb-4">Add a new contact</h2>
+      
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <p>Full Name</p>
