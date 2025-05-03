@@ -1,4 +1,4 @@
-// import { useContext, useReducer, createContext } from "react";
+import { useContext, useReducer, createContext } from "react";
 
 export const initialStore = () => {
   return {
@@ -13,6 +13,16 @@ export default function storeReducer(store, action = {}) {
       return {
         ...store,
         contacts: [...store.contacts, newContact],
+      };
+    }
+
+    case "delete_contact": {
+      const updateContacts = store.contacts.filter(
+        (contact) => contact.id !== action.payload
+      );
+      return {
+        ...store,
+        contacts: updateContacts,
       };
     }
 

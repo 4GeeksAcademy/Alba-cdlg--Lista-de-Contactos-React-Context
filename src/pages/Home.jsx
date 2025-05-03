@@ -7,10 +7,20 @@ import {
 } from "react-icons/fa";
 import useGlobalReducer from "../context/useGlobalReducer.jsx";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export const Home = () => {
   const { store, dispatch } = useGlobalReducer();
   const contacts = store.contacts;
+  const navigate = useNavigate();
+
+  const handleDelete = (id) => {
+    dispatch({ type: "delete_contact", payload: id });
+  };
+
+  const handleEdit = (contact) => {
+    navigate("/contact-form", { state: { contact } });
+  };
 
   return (
     <div className="text-center mt-5">
@@ -48,13 +58,20 @@ export const Home = () => {
                 </p>
               </div>
               <div className="ms-3">
-                <FaEdit className="me-3" style={{ cursor: "pointer" }} />
-                <FaTrash style={{ cursor: "pointer" }} />
+                <FaEdit
+                  className="me-3"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handleEdit(contact)}
+                />
+                <FaTrash
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handleDelete(contact.id)}
+                />
               </div>
             </div>
           ))
         ) : (
-          <p>No contacts available. Please add a contact!</p> // Mensaje en caso de que no haya contactos
+          <p>No contacts available. Please add a contact!</p>
         )}
       </div>
     </div>

@@ -85,7 +85,7 @@ const ContactForm = () => {
             required
           />
         </div>
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-primary w-100">
           Save
         </button>
       </form>
