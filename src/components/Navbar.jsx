@@ -7,7 +7,7 @@ export const Navbar = () => {
 			<div className="container d-flex">				
 				<div className="ms-auto">
 					<Link to="/contact">
-						<button className="btn btn-primary">Add a new contact</button>
+						<button className="btn btn-success text-white">Add a new contact</button>
 					</Link>
 				</div>
 			</div>
