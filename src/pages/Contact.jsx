@@ -1,43 +1,94 @@
-// Import necessary components from react-router-dom and other parts of the application.
-import { Link } from "react-router-dom";
-import useGlobalReducer from "../hooks/useGlobalReducer";  // Custom hook for accessing the global state.
+import { Link, NavigationType, useNavigate } from "react-router-dom";
+import useGlobalReducer from "../hooks/useGlobalReducer";  
+import { useState } from "react";
 
 export const Contact = () => {
-  // Access the global state and dispatch function using the useGlobalReducer hook.
-  const { store, dispatch } = useGlobalReducer()
+
+  const { dispatch } = useGlobalReducer();
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({...formData, [e.target.name]: e.target.value});
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const newContact = {
+      id: Date.now(),
+      ...formData,
+      image: `https://randomuser.me/api/portraits/lego/${Math.floor(Math.random() * 10)}.jpg`,
+    };
+
+    dispatch({ type: "add_contact", payload: newContact });
+    navigate("/");
+  };
 
   return (
-    <div className="container">
-      <ul className="list-group">
-        {/* Map over the 'todos' array from the store and render each item as a list element */}
-        {store && store.todos?.map((item) => {
-          return (
-            <li
-              key={item.id}  // React key for list items.
-              className="list-group-item d-flex justify-content-between"
-              style={{ background: item.background }}> 
-              
-              {/* Link to the detail page of this todo. */}
-              <Link to={"/single/" + item.id}>Link to: {item.title} </Link>
-              
-              <p>Open file ./store.js to see the global store that contains and updates the list of colors</p>
-              
-              <button className="btn btn-success" 
-                onClick={() => dispatch({
-                  type: "add_task", 
-                  payload: { id: item.id, color: '#ffa500' }
-                })}>
-                Change Color
-              </button>
-            </li>
-          );
-        })}
-      </ul>
-      <br />
+    <div className="container mt-5">
+      <h2 className="mb-4">Add a new contact</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <p>Full Name</p>
+          <input 
+            type="text" 
+            name="name" 
+            className="form-control" 
+            placeholder="Full Name" 
+            value={formData.name} 
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="mb-3">
+        <p>Email</p>
+          <input 
+            type="email" 
+            name="email" 
+            className="form-control" 
+            placeholder="Enter email" 
+            value={formData.email} 
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="mb-3">
+        <p>Phone</p>
+          <input 
+            type="tel" 
+            name="phone" 
+            className="form-control" 
+            placeholder="Enter phone" 
+            value={formData.phone} 
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="mb-3">
+        <p>Address</p>
+          <input 
+            type="text" 
+            name="address" 
+            className="form-control" 
+            placeholder="Enter address" 
+            value={formData.address} 
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">Save</button>
+      </form>
 
-      <Link to="/">
-        <button className="btn btn-primary">Back home</button>
-      </Link>
+      <div className="mt-3">
+        <Link to="/" className="btn btn-link">or get back to contacts</Link>
+      </div>
     </div>
   );
 };
