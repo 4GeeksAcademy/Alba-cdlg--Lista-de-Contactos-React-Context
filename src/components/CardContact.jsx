@@ -1,5 +1,5 @@
 import { Link, NavigationType, useNavigate } from "react-router-dom";
-import useGlobalReducer from "../hooks/useGlobalReducer";  
+import useGlobalReducer from "../context/useGlobalReducer";  
 import { useState } from "react";
 
 export const Contact = () => {

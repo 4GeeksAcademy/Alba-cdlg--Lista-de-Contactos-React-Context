@@ -1,5 +1,5 @@
 import { FaEdit, FaTrash, FaMapMarkerAlt, FaPhone, FaEnvelope } from "react-icons/fa";
-import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import useGlobalReducer from "../context/useGlobalReducer.jsx";
 
 export const Home = () => {
 	const contacts = [
