@@ -1,11 +1,13 @@
 import { useState } from "react";
 import useGlobalReducer from "../context/useGlobalReducer";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom"; 
+import { addContact, updateContact } from "../context/actions";
 
 const ContactForm = () => {
-  const { dispatch } = useGlobalReducer();
+  const { store, dispatch } = useGlobalReducer();
   const navigate = useNavigate();
+  const { id } = useParams(); // Para detectar si estamos editando
 
   const [formData, setFormData] = useState({
     name: "",
@@ -14,28 +16,45 @@ const ContactForm = () => {
     address: "",
   });
 
+  const isEditMode = !!id;
+
+  // Si estamos en modo editar, cargar datos del contacto
+  useEffect(() => {
+    if (isEditMode) {
+      const contactToEdit = store.contacts.find(
+        (contact) => contact.id === parseInt (id)
+      );
+      if (contactToEdit) {
+        setFormData({
+          name: contactToEdit.name,
+          email: contactToEdit.email,
+          phone: contactToEdit.phone,
+          address: contactToEdit.address,
+        });
+        }
+      }
+    }
+  }, [id, isEditMode, store.contacts]);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const newContact = {
-      id: Date.now(),
-      ...formData,
-      image: `https://randomuser.me/api/portraits/lego/${Math.floor(
-        Math.random() * 10
-      )}.jpg`,
-    };
+    if (isEditMode) {
+      await updateContact(dispatch, id, formData);
+    } else {
+      await addContact(dispatch, formData);
+    }
 
-    dispatch({ type: "add_contact", payload: newContact });
     navigate("/");
   };
 
   return (
     <div className="container mt-5">
-      
+      <h2>{isEditMode ? "Editar contacto" : "Agregar nuevo contacto"}</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <p>Full Name</p>
@@ -86,13 +105,13 @@ const ContactForm = () => {
           />
         </div>
         <button type="submit" className="btn btn-primary w-100">
-          Save
+          {isEditMode ? "Actualizar" : "Guardar"}
         </button>
       </form>
 
       <div className="mt-3">
         <Link to="/" className="btn btn-link">
-          or get back to contacts
+          o volver a la lista de contactos
         </Link>
       </div>
     </div>
