@@ -25,8 +25,26 @@ export default function storeReducer(store, action = {}) {
         contacts: updateContacts,
       };
     }
+    case "get_contacts": {
+      return {
+        ...store,
+        contacts: action.payload,
+      };
+    }
+
+    case "update_contact": {
+      const updatedContact = action.payload;
+      const updatedContacts = store.contacts.map((contact) =>
+        contact.id === updatedContact.id ? updatedContact : contact
+      );
+      return {
+        ...store,
+        contacts: updatedContacts,
+      };
+    }
 
     default:
-      throw new Error("Unknown action type: " + action.type);
+      console.warn("Unknown action type:", action.type);
+      return store;
   }
 }
