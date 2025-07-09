@@ -1,5 +1,7 @@
 const API_URL = "https://playground.4geeks.com/apis/fake/contact/";
+const AGENDA_SLUG = "my_agenda";
 
+// GET - traer todos los contactos
 export const getContacts = async (dispatch) => {
   try {
     const res = await fetch(API_URL);
@@ -11,12 +13,20 @@ export const getContacts = async (dispatch) => {
   }
 };
 
+// POST - crear un nuevo contacto
 export const addContact = async (dispatch, contact) => {
   try {
+    onst contactWithAgenda = {
+      full_name: contact.name,
+      email: contact.email,
+      phone: contact.phone,
+      address: contact.address,
+      agenda_slug: AGENDA_SLUG,
+    };
     const res = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(contact),
+      body: JSON.stringify(contactWithAgenda),
     });
     if (!res.ok) throw new Error("Failed to add contact");
     const newContact = await res.json();
@@ -26,13 +36,23 @@ export const addContact = async (dispatch, contact) => {
   }
 };
 
+// PUT - actualizar un contacto existente
 export const updateContact = async (dispatch, id, updatedContact) => {
   try {
+    const contactWithAgenda = {
+      full_name: updatedContact.name,
+      email: updatedContact.email,
+      phone: updatedContact.phone,
+      address: updatedContact.address,
+      agenda_slug: AGENDA_SLUG,
+    };
+
     const res = await fetch(`${API_URL}${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedContact),
+      body: JSON.stringify(contactWithAgenda),
     });
+
     if (!res.ok) throw new Error("Failed to update contact");
     const data = await res.json();
     dispatch({ type: "update_contact", payload: data });
@@ -41,6 +61,7 @@ export const updateContact = async (dispatch, id, updatedContact) => {
   }
 };
 
+// DELETE - borrar un contacto
 export const deleteContact = async (dispatch, id) => {
   try {
     const res = await fetch(`${API_URL}${id}`, {
@@ -52,3 +73,4 @@ export const deleteContact = async (dispatch, id) => {
     console.error("Error deleting contact:", error);
   }
 };
+

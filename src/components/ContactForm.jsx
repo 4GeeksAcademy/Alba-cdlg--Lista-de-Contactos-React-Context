@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import useGlobalReducer from "../context/useGlobalReducer";
 import { useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom"; 
@@ -33,8 +33,7 @@ const ContactForm = () => {
         });
         }
       }
-    }
-  }, [id, isEditMode, store.contacts]);
+    }, [id, isEditMode, store.contacts]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
