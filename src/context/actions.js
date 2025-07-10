@@ -41,15 +41,17 @@ export const addContact = async (dispatch, contact) => {
 // PUT - actualizar un contacto existente
 export const updateContact = async (dispatch, id, updatedContact) => {
   try {
+    console.log("🔄 Actualizando contacto con ID:", id);
+
     const contactData = {
-      name: updatedContact.name, // 👈 CAMBIO
+      name: updatedContact.name,
       email: updatedContact.email,
       phone: updatedContact.phone,
       address: updatedContact.address,
       agenda_slug: AGENDA_SLUG
     };
 
-    const res = await fetch(`${API_URL}/contacts/${id}`, {
+    const res = await fetch(`${API_URL}/agendas/${AGENDA_SLUG}/contacts/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(contactData),
@@ -67,7 +69,9 @@ export const updateContact = async (dispatch, id, updatedContact) => {
 // DELETE - borrar un contacto
 export const deleteContact = async (dispatch, id) => {
   try {
-    const res = await fetch(`${API_URL}/contacts/${id}`, {
+    console.log("🗑 Eliminando contacto con ID:", id);
+
+    const res = await fetch(`${API_URL}/contacts/${id}`, { // ✅ URL correcta
       method: "DELETE",
     });
     if (!res.ok) throw new Error("Failed to delete contact");

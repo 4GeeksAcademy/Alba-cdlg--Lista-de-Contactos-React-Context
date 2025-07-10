@@ -8,11 +8,17 @@ import {
 import useGlobalReducer from "../context/useGlobalReducer.jsx";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react"; 
+import { getContacts } from "../context/actions"; 
 
 export const Home = () => {
   const { store, dispatch } = useGlobalReducer();
   const contacts = store.contacts;
   const navigate = useNavigate();
+
+  useEffect(() => {
+    getContacts(dispatch); //LLAMADA PARA CARGAR CONTACTOS
+  }, [dispatch]);
 
   const handleDelete = (id) => {
     dispatch({ type: "delete_contact", payload: id });
