@@ -71,7 +71,7 @@ export const Home = () => {
             </div>
           ))
         ) : (
-          <p>No contacts available. Please add a contact!</p>
+          <p>No hay contactos disponibles. ¡Por favor agrega un contacto!</p>
         )}
       </div>
     </div>

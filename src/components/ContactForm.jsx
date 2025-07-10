@@ -1,16 +1,16 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import useGlobalReducer from "../context/useGlobalReducer";
 import { useNavigate, useParams } from "react-router-dom";
-import { Link } from "react-router-dom"; 
+import { Link } from "react-router-dom";
 import { addContact, updateContact } from "../context/actions";
 
 const ContactForm = () => {
   const { store, dispatch } = useGlobalReducer();
   const navigate = useNavigate();
-  const { id } = useParams(); // Para detectar si estamos editando
+  const { id } = useParams();
 
   const [formData, setFormData] = useState({
-    name: "",
+    full_name: "",
     email: "",
     phone: "",
     address: "",
@@ -18,22 +18,21 @@ const ContactForm = () => {
 
   const isEditMode = !!id;
 
-  // Si estamos en modo editar, cargar datos del contacto
   useEffect(() => {
     if (isEditMode) {
       const contactToEdit = store.contacts.find(
-        (contact) => contact.id === parseInt (id)
+        (contact) => contact.id === parseInt(id)
       );
       if (contactToEdit) {
         setFormData({
-          name: contactToEdit.name,
+          full_name: contactToEdit.full_name,
           email: contactToEdit.email,
           phone: contactToEdit.phone,
           address: contactToEdit.address,
         });
-        }
       }
-    }, [id, isEditMode, store.contacts]);
+    }
+  }, [id, isEditMode, store.contacts]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -41,13 +40,11 @@ const ContactForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (isEditMode) {
       await updateContact(dispatch, id, formData);
     } else {
       await addContact(dispatch, formData);
     }
-
     navigate("/");
   };
 
@@ -56,48 +53,48 @@ const ContactForm = () => {
       <h2>{isEditMode ? "Editar contacto" : "Agregar nuevo contacto"}</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <p>Full Name</p>
+          <p>Nombre completo</p>
           <input
             type="text"
-            name="name"
+            name="full_name"
             className="form-control"
-            placeholder="Full Name"
-            value={formData.name}
+            placeholder="Introduce el nombre completo"
+            value={formData.full_name}
             onChange={handleChange}
             required
           />
         </div>
         <div className="mb-3">
-          <p>Email</p>
+          <p>Correo electrónico</p>
           <input
             type="email"
             name="email"
             className="form-control"
-            placeholder="Enter email"
+            placeholder="Introduce el correo electrónico"
             value={formData.email}
             onChange={handleChange}
             required
           />
         </div>
         <div className="mb-3">
-          <p>Phone</p>
+          <p>Teléfono</p>
           <input
             type="tel"
             name="phone"
             className="form-control"
-            placeholder="Enter phone"
+            placeholder="Introduce el teléfono"
             value={formData.phone}
             onChange={handleChange}
             required
           />
         </div>
         <div className="mb-3">
-          <p>Address</p>
+          <p>Dirección</p>
           <input
             type="text"
             name="address"
             className="form-control"
-            placeholder="Enter address"
+            placeholder="Introduce la dirección"
             value={formData.address}
             onChange={handleChange}
             required

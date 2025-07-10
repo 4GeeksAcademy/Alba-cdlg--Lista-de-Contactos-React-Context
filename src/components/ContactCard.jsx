@@ -14,11 +14,7 @@ const ContactCard = ({ contact }) => {
   return (
     <div className="card">
       {contact.image && (
-        <img
-          src={contact.image}
-          alt={contact.name}
-          className="card-img-top"
-        />
+        <img src={contact.image} alt={contact.name} className="card-img-top" />
       )}
       <div className="card-body">
         <h5 className="card-title">{contact.name}</h5>
@@ -27,16 +23,10 @@ const ContactCard = ({ contact }) => {
         <p className="card-text">{contact.address}</p>
 
         <div className="d-flex justify-content-between">
-          <Link
-            to={`/edit/${contact.id}`}
-            className="btn btn-warning btn-sm"
-          >
+          <Link to={`/edit/${contact.id}`} className="btn btn-secondary me-2">
             Editar
           </Link>
-          <button
-            onClick={handleDelete}
-            className="btn btn-danger btn-sm"
-          >
+          <button onClick={handleDelete} className="btn btn-danger btn-sm">
             Eliminar
           </button>
         </div>
