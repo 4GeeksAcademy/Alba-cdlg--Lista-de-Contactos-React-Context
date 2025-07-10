@@ -25,7 +25,7 @@ const ContactForm = () => {
       );
       if (contactToEdit) {
         setFormData({
-          full_name: contactToEdit.full_name,
+          full_name: contactToEdit.full_name || contactToEdit.name, // 👈 fallback
           email: contactToEdit.email,
           phone: contactToEdit.phone,
           address: contactToEdit.address,
