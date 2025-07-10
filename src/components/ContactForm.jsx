@@ -10,7 +10,7 @@ const ContactForm = () => {
   const { id } = useParams();
 
   const [formData, setFormData] = useState({
-    full_name: "",
+    name: "",
     email: "",
     phone: "",
     address: "",
@@ -25,7 +25,7 @@ const ContactForm = () => {
       );
       if (contactToEdit) {
         setFormData({
-          full_name: contactToEdit.full_name || contactToEdit.name, // 👈 fallback
+          name: contactToEdit.name,
           email: contactToEdit.email,
           phone: contactToEdit.phone,
           address: contactToEdit.address,
@@ -56,10 +56,10 @@ const ContactForm = () => {
           <p>Nombre completo</p>
           <input
             type="text"
-            name="full_name"
+            name="name"
             className="form-control"
             placeholder="Introduce el nombre completo"
-            value={formData.full_name}
+            value={formData.name}
             onChange={handleChange}
             required
           />

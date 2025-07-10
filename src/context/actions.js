@@ -7,7 +7,7 @@ export const getContacts = async (dispatch) => {
     const res = await fetch(`${API_URL}/agendas/${AGENDA_SLUG}/contacts`);
     if (!res.ok) throw new Error("Failed to fetch contacts");
     const data = await res.json();
-    dispatch({ type: "get_contacts", payload: data.contacts }); // 👈 solo la lista
+    dispatch({ type: "get_contacts", payload: data.contacts }); //  solo la lista
   } catch (error) {
     console.error("Error fetching contacts:", error);
   }
@@ -17,14 +17,14 @@ export const getContacts = async (dispatch) => {
 export const addContact = async (dispatch, contact) => {
   try {
     const contactData = {
-      full_name: contact.full_name, // API espera full_name
+      name: contact.name, 
       email: contact.email,
       phone: contact.phone,
       address: contact.address,
-      agenda_slug: AGENDA_SLUG // API lo necesita
+      agenda_slug: AGENDA_SLUG
     };
 
-    const res = await fetch(`${API_URL}/contacts/`, {
+    const res = await fetch(`${API_URL}/agendas/${AGENDA_SLUG}/contacts`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(contactData),
@@ -42,7 +42,7 @@ export const addContact = async (dispatch, contact) => {
 export const updateContact = async (dispatch, id, updatedContact) => {
   try {
     const contactData = {
-      full_name: updatedContact.full_name,
+      name: updatedContact.name, // 👈 CAMBIO
       email: updatedContact.email,
       phone: updatedContact.phone,
       address: updatedContact.address,
@@ -62,6 +62,7 @@ export const updateContact = async (dispatch, id, updatedContact) => {
     console.error("Error updating contact:", error);
   }
 };
+
 
 // DELETE - borrar un contacto
 export const deleteContact = async (dispatch, id) => {
