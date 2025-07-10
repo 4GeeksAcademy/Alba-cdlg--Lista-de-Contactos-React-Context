@@ -69,13 +69,23 @@ export const updateContact = async (dispatch, id, updatedContact) => {
 // DELETE - borrar un contacto
 export const deleteContact = async (dispatch, id) => {
   try {
-    console.log("🗑 Eliminando contacto con ID:", id);
+    console.log(`🔴 Borrando contacto con ID: ${id}`); // 👀 debug
+    const res = await fetch(
+      `${API_URL}/agendas/${AGENDA_SLUG}/contacts/${id}`, // ✅ URL CORRECTA
+      {
+        method: "DELETE",
+      }
+    );
 
-    const res = await fetch(`${API_URL}/contacts/${id}`, { // ✅ URL correcta
-      method: "DELETE",
-    });
-    if (!res.ok) throw new Error("Failed to delete contact");
+    if (!res.ok) {
+      const errorResponse = await res.json();
+      console.error("❌ Error al borrar en API:", errorResponse);
+      throw new Error("Failed to delete contact");
+    }
+
+    // Actualiza el estado después de borrar
     dispatch({ type: "delete_contact", payload: id });
+    console.log("✅ Contacto eliminado correctamente en la API");
   } catch (error) {
     console.error("Error deleting contact:", error);
   }
