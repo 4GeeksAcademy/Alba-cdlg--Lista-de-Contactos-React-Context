@@ -19,7 +19,7 @@ export const Home = () => {
   };
 
   const handleEdit = (contact) => {
-    navigate("/contact-form", { state: { contact } });
+    navigate(`/edit/${contact.id}`);
   };
 
   return (
