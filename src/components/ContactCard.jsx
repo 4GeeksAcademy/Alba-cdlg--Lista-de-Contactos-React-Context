@@ -14,6 +14,7 @@ const ContactCard = ({ contact }) => {
     setShowModal(false);
   };
 
+  // Imagen lego
   // Usa la imagen del contacto o un placeholder si no hay
   const profileImage =
   contact.image ||
