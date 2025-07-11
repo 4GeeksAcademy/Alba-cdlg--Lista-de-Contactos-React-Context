@@ -1,15 +1,9 @@
-import {
-  FaEdit,
-  FaTrash,
-  FaMapMarkerAlt,
-  FaPhone,
-  FaEnvelope,
-} from "react-icons/fa";
-import useGlobalReducer from "../context/useGlobalReducer.jsx";
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react"; 
-import { getContacts } from "../context/actions"; 
+import { FaMapMarkerAlt, FaPhone, FaEnvelope } from "react-icons/fa";
+import useGlobalReducer from "../context/useGlobalReducer.jsx";
+import { getContacts } from "../context/actions";
+import ContactCard from "../components/ContactCard";
 
 export const Home = () => {
   const { store, dispatch } = useGlobalReducer();
@@ -17,64 +11,15 @@ export const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getContacts(dispatch); //LLAMADA PARA CARGAR CONTACTOS
+    getContacts(dispatch); // 🔄 Cargar contactos desde la API al montar
   }, [dispatch]);
-
-  const handleDelete = (id) => {
-    dispatch({ type: "delete_contact", payload: id });
-  };
-
-  const handleEdit = (contact) => {
-    navigate(`/edit/${contact.id}`);
-  };
 
   return (
     <div className="text-center mt-5">
       <div className="card">
         {contacts.length > 0 ? (
           contacts.map((contact) => (
-            <div
-              key={contact.id}
-              className="card-body border-bottom d-flex align-items-center"
-            >
-              <img
-                src={contact.image}
-                alt={contact.name}
-                className="rounded-circle"
-                style={{
-                  width: "100px",
-                  height: "100px",
-                  objectFit: "cover",
-                  marginRight: "20px",
-                }}
-              />
-              <div className="flex-grow-1 text-start">
-                <h5>{contact.name}</h5>
-                <p className="mb-1">
-                  <FaMapMarkerAlt className="me-2" />
-                  {contact.address}
-                </p>
-                <p className="mb-1">
-                  <FaPhone className="me-2" />
-                  {contact.phone}
-                </p>
-                <p className="mb-0">
-                  <FaEnvelope className="me-2" />
-                  {contact.email}
-                </p>
-              </div>
-              <div className="ms-3">
-                <FaEdit
-                  className="me-3"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => handleEdit(contact)}
-                />
-                <FaTrash
-                  style={{ cursor: "pointer" }}
-                  onClick={() => handleDelete(contact.id)}
-                />
-              </div>
-            </div>
+            <ContactCard key={contact.id} contact={contact} />
           ))
         ) : (
           <p>No hay contactos disponibles. ¡Por favor agrega un contacto!</p>

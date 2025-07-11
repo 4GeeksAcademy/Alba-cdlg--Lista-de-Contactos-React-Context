@@ -16,12 +16,18 @@ export const getContacts = async (dispatch) => {
 // POST - crear un nuevo contacto
 export const addContact = async (dispatch, contact) => {
   try {
+    // 📸 Generar una foto random de Lego
+    const randomImage = `https://randomuser.me/api/portraits/men/${Math.floor(
+      Math.random() * 100
+    )}.jpg`;
+
     const contactData = {
-      name: contact.name, 
+      name: contact.name,
       email: contact.email,
       phone: contact.phone,
       address: contact.address,
-      agenda_slug: AGENDA_SLUG
+      agenda_slug: AGENDA_SLUG,
+      image: randomImage, // Añade la imagen random
     };
 
     const res = await fetch(`${API_URL}/agendas/${AGENDA_SLUG}/contacts`, {
@@ -48,14 +54,17 @@ export const updateContact = async (dispatch, id, updatedContact) => {
       email: updatedContact.email,
       phone: updatedContact.phone,
       address: updatedContact.address,
-      agenda_slug: AGENDA_SLUG
+      agenda_slug: AGENDA_SLUG,
     };
 
-    const res = await fetch(`${API_URL}/agendas/${AGENDA_SLUG}/contacts/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(contactData),
-    });
+    const res = await fetch(
+      `${API_URL}/agendas/${AGENDA_SLUG}/contacts/${id}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(contactData),
+      }
+    );
 
     if (!res.ok) throw new Error("Failed to update contact");
     const data = await res.json();
@@ -64,7 +73,6 @@ export const updateContact = async (dispatch, id, updatedContact) => {
     console.error("Error updating contact:", error);
   }
 };
-
 
 // DELETE - borrar un contacto
 export const deleteContact = async (dispatch, id) => {
